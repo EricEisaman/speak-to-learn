@@ -1,0 +1,292 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,maximum-scale=1">
+    <title>Speak to Learn</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.5.0/annyang.min.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
+    <script src="/aframe-speech-command-component.js"></script>
+    <script src="/aframe-door-component.js"></script>
+    <script src="./js/material-displacement.js"></script>
+    <script src="/aframe-sun-sky-component.js"></script>
+  </head>
+  <body>
+    <script>
+      AFRAME.registerComponent('sun-position-setter', {
+        init: function () {
+          var skyEl = this.el;
+          var orbitEl = this.el.sceneEl.querySelector('#orbit');
+          orbitEl.addEventListener('componentchanged', function changeSun (evt) {
+            var sunPosition;
+            var phi;
+            var theta;
+            if (evt.detail.name !== 'rotation') { return; }
+            sunPosition = orbitEl.getComputedAttribute('rotation');
+            if(sunPosition === null) { return; }
+            theta = Math.PI * (- 0.5);
+            phi = 2 * Math.PI * (sunPosition.y / 360 - 0.5);
+            skyEl.setAttribute('material', 'sunPosition', {
+              x: Math.cos(phi),
+              y: Math.sin(phi) * Math.sin(theta),
+              z: -1
+            });
+          });
+        }
+      });
+    </script>
+    
+    <a-scene id="scene-1" fog="type: exponential; color: 	#3462A3; density: 0.03;" vr-mode-ui="enabled: false">
+      <a-entity id="standard-elements">
+      <a-sun-sky sun-position-setter>
+        <a-entity id="orbit">
+          <a-animation attribute="rotation" from="0 0 0" to="0 360 0" dur="500000"
+                       repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
+      </a-sun-sky>
+      <!-- Player -->
+      <a-entity id="player"
+                camera="userHeight: 1.6"
+                universal-controls
+                kinematic-body
+                position="15 0 10"
+                jump-ability="maxJumps: 0;
+                              distance: 10;">
+      </a-entity>
+
+      <!--
+        Platforms
+        Just a placeholder - platforms.js will insert random blocks.
+      -->
+      <a-entity id="platforms"></a-entity>
+
+      <!-- Ground -->
+      <a-grid static-body></a-grid>
+
+      <!-- Sky -->
+<!--       <a-sky id="sky" color="#AADDF0"></a-sky> -->
+
+      <!-- Lighting -->
+      <a-light type="ambient" color="#ccc"></a-light>
+      <a-light color="#ddf" position="0 30 0" distance="100" intensity="0.3" type="point"></a-light>
+      <a-light color="#ddf" position="3 10 -10" distance="50" intensity="0.3" type="point"></a-light>
+      </a-entity>
+       
+      <a-entity id="custom-elements">
+        <a-entity id="annyang" annyang-speech-recognition></a-entity>
+        <a-box id="up-1" 
+               position="26 1 0"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               effects="colors"
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-1"
+               position="26 1 0"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        <a-box id="up-2" 
+               position="26 1 -15"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-2"
+               position="26 1 -15"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        <a-box id="up-3" 
+               position="26 1 -30"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-3"
+               position="26 1 -30"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        <a-box id="up-4" 
+               position="16 1 -35"
+               rotation="0 90 0"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-4"
+               position="16 1 -35"
+               rotation="0 90 0"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        <a-box id="up-5" 
+               position="0 1 -35"
+               rotation="0 90 0"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-5"
+               position="0 1 -35"
+               rotation="0 90 0"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        <a-box id="up-6" 
+               position="-15 1 -35"
+               rotation="0 90 0"
+               color="#EE82EE"
+               width="4" height="4" depth="2"
+               static-body
+               door="trigger:voice;">
+        </a-box>
+        <a-box id="jump-power-6"
+               position="-15 1 -35"
+               rotation="0 90 0"
+               color="yellow"
+               width="1" height="1" depth="1">
+        </a-box>
+        
+        
+        
+        <a-box id="goal" 
+               position="0 70 0"
+               rotation="0 90 0"
+               color="blue"
+               width="4" height="2" depth="4"
+               static-body>
+        </a-box>
+        <a-box id="eddies"
+               material="src:url(https://cdn.glitch.com/6931b944-459f-491c-af34-46d30105ca92%2FYHA-IoT.png?1529236992189);
+                              transparent:true"
+               position="0 75 15"
+               rotation="0 90 0"
+               color="white"
+               width="4" height="4" depth="0.1"
+               static-body>
+        </a-box>
+        
+        <!-- Magical Clouds -->
+      <a-entity id="magical-cloud-1"
+                position="-10 18 0">
+        <a-animation attribute="rotation"
+               dur="10000"
+               fill="forwards"
+               to="0 360 0"
+               repeat="indefinite">
+        </a-animation>
+        <a-sphere 
+                material-displacement
+                scale="1 1 1"
+                radius="1"
+                position="0 5 10"
+                segments-height="128"
+                segments-width="128">
+          <a-animation attribute="position" 
+                     direction="alternate-reverse" 
+                     dur="3000" 
+                     from="0 5 10" to="0 -5 10" 
+                     repeat="indefinite">
+          </a-animation>
+        </a-sphere>
+       </a-entity>
+        
+      <a-entity id="magical-cloud-2"
+                position="0 24 -15"
+                scale="4 4 4">
+        <a-animation attribute="rotation"
+               dur="18000"
+               fill="forwards"
+               to="0 360 0"
+               repeat="indefinite">
+        </a-animation>
+        <a-sphere
+                material-displacement
+                scale="1 1 1"
+                radius="1"
+                position="0 5 10"
+                segments-height="128"
+                segments-width="128">
+          <a-animation attribute="position" 
+                     direction="alternate-reverse" 
+                     dur="5000" 
+                     from="0 5 10" to="0 -5 10" 
+                     repeat="indefinite">
+          </a-animation>
+        </a-sphere>
+      </a-entity>
+        
+      <a-entity id="magical-cloud-3"
+                position="0 100 -25"
+                scale="6 6 6">
+        <a-animation attribute="rotation"
+               dur="22000"
+               fill="forwards"
+               to="0 360 0"
+               repeat="indefinite">
+        </a-animation>
+        <a-sphere
+                material-displacement
+                scale="1 1 1"
+                radius="1"
+                position="0 5 10"
+                segments-height="128"
+                segments-width="128">
+          <a-animation attribute="position" 
+                     direction="alternate-reverse" 
+                     dur="4000" 
+                     from="0 5 10" to="0 -15 10" 
+                     repeat="indefinite">
+          </a-animation>
+        </a-sphere>
+      </a-entity>
+        
+        
+        
+      </a-entity>
+
+    </a-scene>
+    <div id="hud">
+      <pre id="speak-2-learn">Speak-2-Learn</pre>
+      <br>
+      JUMPS : <span id="jumpsHUD">0</span>
+      <br>
+      MAX HEIGHT : <span id="maxHeightHUD">0 METERS</span>
+      <br>
+      TIME : <span id="timeHUD">90</span>
+    </div>
+    <!-- The Modal -->
+    <div id="instructions" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>
+          <span id="modal-heading">Instructions</span>
+          <ul>
+            <li>Your goal is to reach a height of 100 meters!</li>
+            <li>However, you can't jump until you prove yourself.</li>
+            <li>Absorb the energy of the yellow blocks.</li>
+            <li>When you see a question: Say the answer.</li>
+            <li>Use WASD or Arrow Keys and touchpad or mouse to move.</li>
+            <li>Close these instructions and PRESS ENTER to begin.</li>
+          </ul>
+        </p>
+      </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="client.js"></script>
+  </body>
+</html>

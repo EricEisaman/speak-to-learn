@@ -1,0 +1,37 @@
+<html>
+<head>
+  <meta charset="utf-8">
+    <title>S2L</title>
+    <link rel="stylesheet" href="teacher.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+</head>
+ <body>   
+    <div id="login">
+      <form name="login">
+        <span class="fontawesome-user"></span>
+        <input type="text" id="user" placeholder="Username">
+        <span class="fontawesome-lock"></span>
+        <input type="password" id="pass" placeholder="Password">
+        <input id="submit" type="submit" value="Login">
+      </form>
+    </div>
+    <div id="new">
+      <form id="new-q">
+        <span class="fontawesome-question-sign"></span>
+        <input type="text" id="question" placeholder="question">
+        <div>
+          <span class="fontawesome-star"></span>
+          <input type="text" id="answer" placeholder="answer"> 
+        </div>
+        <input id="submit-q" type="submit" value="Save Question">
+      </form>
+   </div>
+   <div id="copied">Question Saved and Activity URL Copied to Clipboard</div>
+   <textarea id="activity-url"></textarea>
+   <div id="data"></div>
+   <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script src="./teacher.js"></script>
+</body>
+</html>
